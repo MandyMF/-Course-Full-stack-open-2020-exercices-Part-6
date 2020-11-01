@@ -27,18 +27,4 @@ export const setNotification = (message, timeout) => {
   }
 }
 
-/*export const setNotification = (message) => {
-  return {
-    type: 'SET_NOTIFICATION_MESSAGE',
-    data: message
-  }
-}*/
-
-/*export const removeNotification = () => {
-  return {
-    type: 'SET_NOTIFICATION_MESSAGE',
-    data: null
-  }
-}*/
-
 export default notificationReducer

@@ -1,7 +1,7 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { connect } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
-import { setNotification, removeNotification } from  '../reducers/notificationReducer'
+import { setNotification } from  '../reducers/notificationReducer'
 
 const Anecdote = ({ anecdote, handleClick }) => {
 
@@ -18,27 +18,46 @@ const Anecdote = ({ anecdote, handleClick }) => {
   )
 }
 
-const AnecdoteList = () => {
-  const anecdotes = useSelector(({ anecdotes, filter }) => anecdotes
+const AnecdoteList = ( props ) => {
+  /*const anecdotes = useSelector(({ anecdotes, filter }) => anecdotes
     .filter(anecdote => anecdote.content.toUpperCase().includes(filter.toUpperCase()))
     .sort((anecdote1, anecdote2) => {
       return anecdote2.votes - anecdote1.votes
     })
-  )
-  const dispatch = useDispatch()
-
-  const vote = (anecdote) => {
-    dispatch(voteAnecdote(anecdote))
-    dispatch(setNotification(`you voted '${anecdote.content}'`, 5))
-  }
+  )*/
+  //const dispatch = useDispatch()
 
   return (
     <div>
-      {anecdotes.map(anecdote =>
-        <Anecdote key={anecdote.id} anecdote={anecdote} handleClick={() => vote(anecdote)}/>
+      {props.anecdotes.map(anecdote =>
+        <Anecdote key={anecdote.id} anecdote={anecdote} handleClick={() => props.voteAnecdote(anecdote)}/>
       )}
     </div>
   )
 }
 
-export default AnecdoteList
+const mapStateToProps = (state) => {
+  return {
+    anecdotes: state.anecdotes
+      .filter(anecdote => anecdote.content.toUpperCase().includes(state.filter.toUpperCase()))
+      .sort((anecdote1, anecdote2) => {
+        return anecdote2.votes - anecdote1.votes
+      })
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    voteAnecdote: anecdote => {
+      dispatch(voteAnecdote(anecdote))
+      dispatch(setNotification(`you voted '${anecdote.content}'`, 5))
+    }
+  }
+}
+
+const ConnectedAnecdoteList = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AnecdoteList)
+
+export default ConnectedAnecdoteList
