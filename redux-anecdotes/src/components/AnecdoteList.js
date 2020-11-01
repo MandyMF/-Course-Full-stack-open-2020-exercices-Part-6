@@ -27,9 +27,9 @@ const AnecdoteList = () => {
   )
   const dispatch = useDispatch()
 
-  const vote = (id, content) => {
-    dispatch(voteAnecdote(id))
-    dispatch(setNotification(`you voted '${content}'`))
+  const vote = (anecdote) => {
+    dispatch(voteAnecdote(anecdote))
+    dispatch(setNotification(`you voted '${anecdote.content}'`))
     setTimeout(() => {
       dispatch(removeNotification())
     }, 5000)
@@ -39,7 +39,7 @@ const AnecdoteList = () => {
   return (
     <div>
       {anecdotes.map(anecdote =>
-        <Anecdote key={anecdote.id} anecdote={anecdote} handleClick={() => vote(anecdote.id, anecdote.content)}/>
+        <Anecdote key={anecdote.id} anecdote={anecdote} handleClick={() => vote(anecdote)}/>
       )}
     </div>
   )
